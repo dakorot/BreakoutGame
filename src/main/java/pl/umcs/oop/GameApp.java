@@ -14,14 +14,20 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class GameApp extends Application implements ActionListener {
+    private int width = 800;
+    private int height = 600;
+    private boolean gameIsOn = false;
+
     public static void main(String[] args) {
         launch(args);
     }
 
+    public void startGame() {
+        this.gameIsOn = true;
+    }
+
     @Override
     public void start(Stage primaryStage) {
-        int width = 800;
-        int height = 600;
         GameCanvas gameCanvas = new GameCanvas(width, height);
         GraphicsItem.setCanvasWidth(width);
         GraphicsItem.setCanvasHeight(height);
@@ -37,6 +43,17 @@ public class GameApp extends Application implements ActionListener {
             paddle.setX(mouseX - paddle.getWidth() / 2);
         });
 
+        Ball ball = new Ball();
+        while(!gameIsOn) {
+            ball.setPosition(paddle);
+        }
+
+        scene.setOnMouseClicked(event -> { startGame(); });
+
+        while(gameIsOn) {
+            ball.updatePosition();
+        }
+
         primaryStage.setTitle("Breakout");
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -44,8 +61,9 @@ public class GameApp extends Application implements ActionListener {
         AnimationTimer animationTimer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                gameCanvas.draw();
+//                ball.draw(paddle);
                 paddle.draw(gameCanvas.getGraphicsContext2D());
+
             }
         };
         animationTimer.start();
@@ -66,6 +84,8 @@ public class GameApp extends Application implements ActionListener {
             graphicsContext.setFill(Color.BLACK);
             graphicsContext.fillRect(0, 0, getWidth(), getHeight());
         }
+
+
     }
 }
 
