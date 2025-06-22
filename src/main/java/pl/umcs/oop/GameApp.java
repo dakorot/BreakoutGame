@@ -13,6 +13,9 @@ import javafx.stage.Stage;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import static pl.umcs.oop.GraphicsItem.setCanvasHeight;
+import static pl.umcs.oop.GraphicsItem.setCanvasWidth;
+
 public class GameApp extends Application implements ActionListener {
     private int width = 800;
     private int height = 600;
@@ -28,32 +31,22 @@ public class GameApp extends Application implements ActionListener {
 
     @Override
     public void start(Stage primaryStage) {
-        GameCanvas gameCanvas = new GameCanvas(width, height);
-        GraphicsItem.setCanvasWidth(width);
-        GraphicsItem.setCanvasHeight(height);
-        gameCanvas.draw();
+        GameCanvas gameCanvas = new GameCanvas();
+        setCanvasWidth(width);
+        setCanvasHeight(height);
 
         StackPane root = new StackPane(gameCanvas);
         Scene scene = new Scene(root, 800, 600);
-
         Paddle paddle = new Paddle();
+        Ball ball = new Ball();
+
+        gameCanvas.draw();
+        paddle.draw(gameCanvas.getGraphicsContext2D());
         gameCanvas.setOnMouseMoved(event -> {
             double mouseX = event.getX();
-            double mouseY = event.getY();
             paddle.setX(mouseX - paddle.getWidth() / 2);
         });
-
-        Ball ball = new Ball();
-        while(!gameIsOn) {
-            ball.setPosition(paddle);
-        }
-
-        scene.setOnMouseClicked(event -> { startGame(); });
-
-        while(gameIsOn) {
-            ball.updatePosition();
-        }
-
+        paddle.draw(gameCanvas.getGraphicsContext2D());
         primaryStage.setTitle("Breakout");
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -61,9 +54,17 @@ public class GameApp extends Application implements ActionListener {
         AnimationTimer animationTimer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-//                ball.draw(paddle);
+                gameCanvas.draw();
                 paddle.draw(gameCanvas.getGraphicsContext2D());
+                ball.draw(gameCanvas.getGraphicsContext2D());
 
+                if(!gameIsOn) {
+                    ball.setPosition(paddle);
+                    scene.setOnMouseClicked(event -> { startGame(); });
+                }
+                else {
+                    ball.updatePosition();
+                }
             }
         };
         animationTimer.start();
@@ -71,22 +72,6 @@ public class GameApp extends Application implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent event) {}
-
-    public static class GameCanvas extends Canvas {
-        private final GraphicsContext graphicsContext;
-
-        public GameCanvas(int width, int height) {
-            super(width, height);
-            graphicsContext = this.getGraphicsContext2D();
-        }
-
-        public void draw() {
-            graphicsContext.setFill(Color.BLACK);
-            graphicsContext.fillRect(0, 0, getWidth(), getHeight());
-        }
-
-
-    }
 }
 
 
