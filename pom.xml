@@ -26,6 +26,11 @@
             <artifactId>javafx-graphics</artifactId>
             <version>${javafx.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-fxml</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -35,6 +40,9 @@
                 <version>0.0.8</version>
                 <configuration>
                     <mainClass>pl.umcs.oop.GameApp</mainClass>
+                    <options>
+                        <option>--add-modules=javafx.controls,javafx.fxml</option>
+                    </options>
                 </configuration>
                 <executions>
                     <execution>

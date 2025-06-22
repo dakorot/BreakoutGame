@@ -20,6 +20,21 @@ public class Paddle extends GraphicsItem {
             this.x = x;
     }
 
+    public boolean collision(Ball ball) {
+        double ballTop = ball.getTop();
+        double ballRight = ball.getRight();
+        double ballBottom = ball.getBottom();
+        double ballLeft = ball.getLeft();
+
+        double paddleTop = this.getY();
+        double paddleRight = this.getX() + this.getWidth();
+        double paddleBottom = this.getY() + this.getHeight();
+        double paddleLeft = this.getX();
+
+        return (ballTop < paddleTop && ballBottom >= paddleTop) &&
+                (ballRight > paddleLeft && ballLeft < paddleRight);
+    }
+
     @Override
     public void draw(GraphicsContext graphicsContext) {
         graphicsContext.setFill(Color.WHITE);

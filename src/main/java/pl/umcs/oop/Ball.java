@@ -5,14 +5,14 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
 public class Ball extends GraphicsItem {
-    private final Point2D moveVector;
+    private Point2D moveVector;
     private final double velocity;
 
     public Ball() {
-        this.height = 25.0;
         this.width = 25.0;
+        this.height = 25.0;
         this.moveVector = new Point2D(1, -1);
-        this.velocity = 1.0;
+        this.velocity = 0.4;
     }
 
     public void setPosition(Point2D point2D) {
@@ -34,5 +34,29 @@ public class Ball extends GraphicsItem {
     public void draw(GraphicsContext graphicsContext) {
         graphicsContext.setFill(Color.WHITE);
         graphicsContext.fillOval(x, y, width, height);
+    }
+
+    public void bounceHorizontally() {
+        this.moveVector = new Point2D(-moveVector.getX(), moveVector.getY());
+    }
+
+    public void bounceVertically() {
+        this.moveVector = new Point2D(moveVector.getX(), -moveVector.getY());
+    }
+
+    public double getTop() {
+        return y;
+    }
+
+    public double getRight() {
+        return x + width;
+    }
+
+    public double getBottom() {
+        return y + height;
+    }
+
+    public double getLeft() {
+        return x;
     }
 }
