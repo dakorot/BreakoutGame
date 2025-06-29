@@ -13,14 +13,12 @@ import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.List;
 
 import static pl.umcs.oop.GraphicsItem.setCanvasHeight;
 import static pl.umcs.oop.GraphicsItem.setCanvasWidth;
 
-public class GameApp extends Application implements ActionListener {
+public class GameApp extends Application {
     private int width = 800;
     private int height = 600;
     private boolean gameIsOn = false;
@@ -124,9 +122,5 @@ public class GameApp extends Application implements ActionListener {
 
                 public static void main(String[] args) {
                     launch(args);
-                }
-
-                @Override
-                public void actionPerformed(ActionEvent event) {
                 }
             }
